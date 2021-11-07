@@ -38,10 +38,16 @@ export default {
         booksToShow() {
             if (!this.filterBy) return this.books;
             const searchStr = this.filterBy.title.toLowerCase();
-            const booksToShow = this.books.filter((book) => {
+            const sortBy = this.books.filter((book) => {
                 return book.title.toLowerCase().includes(searchStr);
             });
-            return booksToShow;
+            const minPrice = (this.filterBy.minPrice) ? this.filterBy.minPrice : 0
+            const maxPrice = (this.filterBy.maxPrice) ? this.filterBy.maxPrice : Infinity
+
+            const filterBook = sortBy.filter(book => {
+                return (book.listPrice.amount >= minPrice && book.listPrice.amount <= maxPrice)
+            });
+            return filterBook;
         },
     },
     components: {

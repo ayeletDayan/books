@@ -5,11 +5,7 @@
 body{
     background-color: rgb(170, 163, 163);
     font-family: fantasy;
-
-}
-
-.book-app{
-    height: 90vh;    
+text-align: center;
 }
 
 .book-filter{
