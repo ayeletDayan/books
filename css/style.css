@@ -74,3 +74,17 @@ button{
 .green{
     color: green;
 }
+
+.sale{
+    font-weight: bold;
+    background-color: yellow;
+    width: fit-content;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.read{
+    box-shadow: 1px 2px 2px 2px black;
+    font-size: 8px;
+}
