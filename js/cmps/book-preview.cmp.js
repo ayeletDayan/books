@@ -3,8 +3,8 @@ export default {
     template: `
     <div class="book-preview">
             <img :src="book.thumbnail">
-            <p>Title : {{book.title}}</p>
-            <p>Authors : {{book.authors}}</p>
+            <p class="book-title">{{book.title}}</p>
+            <p>Authors: {{book.authors.join()}}</p>
         </div>
     `,
 };

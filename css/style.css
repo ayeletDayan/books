@@ -1,5 +1,76 @@
+*{
+    box-sizing: border-box;
+}
+
 body{
     background-color: rgb(170, 163, 163);
     font-family: fantasy;
 
+}
+
+.book-app{
+    height: 90vh;    
+}
+
+.book-filter{
+    padding: 20px;
+    background-color: rgba(255, 0, 0, 0.589);
+}
+
+.book-list {
+    padding: 20px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;    
+
+}
+
+img {
+    width: 100px;
+}
+
+.book-preview-container {
+    font-size: 20px;
+    padding: 10px;
+    border: 1px solid black;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background-color: whitesmoke;
+    box-shadow: 2px 2px 2px 2px rgba(255, 0, 0, 0.589);
+    width: 200px;
+}
+
+.book-details{
+    padding: 20px;
+    margin-top: 20px;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+button{
+    background-color: rgb(170, 163, 163);
+}
+
+.app-footer {
+    padding: 10px;
+    background-color:  rgba(255, 0, 0, 0.589);
+}
+
+.book-title{
+    font-variant-caps: all-small-caps;
+    font-size: 20px;
+
+}
+
+.red {
+    color: red;
+}
+
+.green{
+    color: green;
 }

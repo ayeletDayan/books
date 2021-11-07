@@ -7,8 +7,8 @@ export default {
     template: `
     <section class="book-app">
             <book-filter @filtered="setFilter" />
-            <book-list :books="booksToShow" @selected="selectBook" />
-            <book-details v-if="selectedBook" :car="selectedBook" @close="closeDetails" />
+            <book-list v-if="isShown" :books="booksToShow" @selected="selectBook" />
+            <book-details v-if="selectedBook" :book="selectedBook" @close="closeDetails" />
         </section>
 
     `,
@@ -17,11 +17,17 @@ export default {
             books: bookService.query(),
             selectedBook: null,
             filterBy: null,
+            isShown: true
         };
     },
     methods: {
         selectBook(book) {
+            this.selectedBook = book;
+            this.isShown = false;
+        },
+        closeDetails() {
             this.selectedBook = null;
+            this.isShown = true;
         },
         setFilter(filterBy) {
             this.filterBy = filterBy;
