@@ -1,7 +1,10 @@
 export const utilService = {
     saveToStorage,
     loadFromStorage,
-    makeId
+    makeId,
+    query,
+    get,
+    put
 }
 
 function saveToStorage(key, value) {
@@ -20,4 +23,28 @@ function makeId(length = 5) {
         txt += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return txt;
+}
+
+function query(entityType) {
+    var entities = JSON.parse(localStorage.getItem(entityType)) || []
+    return Promise.resolve(entities);
+}
+
+function get(entityType, entityId) {
+    return query(entityType)
+        .then(entities => entities.find(entity => entity.id === entityId))
+}
+
+function put(entityType, updatedEntity) {
+    return query(entityType)
+        .then(entities => {
+            const idx = entities.findIndex(entity => entity.id === updatedEntity.id);
+            entities.splice(idx, 1, updatedEntity)
+            _save(entityType, entities)
+            return updatedEntity;
+        })
+}
+
+function _save(entityType, entities) {
+    localStorage.setItem(entityType, JSON.stringify(entities))
 }

@@ -1,9 +1,11 @@
 import bookDescription from '../cmps/book-description.cmp.js';
+import { bookService } from '../services/book-service.js';
+import reviewAdd from '../cmps/review-add.cmp.js'
 
 export default {
-    props: ['book'],
+    // props: ['book'],
     template: `
-        <section class="book-details">
+        <section v-if="book" class="book-details">
             <h3>Book Details:</h3>
             <p class="book-title">{{book.title}} by {{book.authors.join()}}</p>
             <book-description :description="book.description"></book-description>
@@ -11,11 +13,33 @@ export default {
             <p>{{book.pageCount}} pages <span>{{pageCount}}</span></p>
             <p :class="price">{{currencyCode}}</p>
             <p v-if=book.listPrice.isOnSale class="sale">SALE!!!</p>
+            <review-add @addReview="saveReview"/> 
+            <ul v-if="book.reviews">
+            <h4>Reviews</h4>
+                <li class="reviews-list" v-for="review in book.reviews">{{review.txt}}</li>
+            </ul>
+            <br>
             <button @click="$emit('close')" >X</button>
         </section>
     `,
-    methodes: {
 
+    data() {
+        return {
+            book: null
+        };
+    },
+    created() {      
+        const { bookId } = this.$route.params;
+        console.log(bookId);
+        bookService.getById(bookId)
+            .then(book =>{ this.book = book});
+    },
+    methods: {
+        saveReview(review){
+            if(!this.book.reviews) this.book.reviews = []
+            this.book.reviews.push(review)
+            bookService.put(this.book)
+        }
     },
     computed: {
         pageCount() {
@@ -32,13 +56,14 @@ export default {
             if (this.book.listPrice.amount < 20) return 'green'
         },
         currencyCode() {
-            if (this.book.listPrice.currencyCode === 'USD') return (new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.book.listPrice.amount))
+            if (this.book.listPrice.currencyCode === 'USD') return (new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'USD' }).format(this.book.listPrice.amount))
             if (this.book.listPrice.currencyCode === 'EUR') return (new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(this.book.listPrice.amount))
-            if (this.book.listPrice.currencyCode === 'ILS') return (new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'ILS' }).format(this.book.listPrice.amount))
+            if (this.book.listPrice.currencyCode === 'ILS') return (new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'ILS' }).format(this.book.listPrice.amount))
         },
 
     },
     components: {
-        bookDescription
+        bookDescription,
+        reviewAdd
     }
 }

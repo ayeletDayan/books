@@ -8,19 +8,25 @@ export default {
     <section class="book-app">
             <book-filter @filtered="setFilter" />
             <book-list v-if="isShown" :books="booksToShow" @selected="selectBook" />
-            <book-details v-if="selectedBook" :book="selectedBook" @close="closeDetails" />
         </section>
 
     `,
     data() {
         return {
             books: bookService.query(),
-            selectedBook: null,
+            // selectedBook: null,
             filterBy: null,
             isShown: true
         };
     },
+    created() {
+        this.loadBooks();
+    },
     methods: {
+        loadBooks() {
+            bookService.query()
+                .then(books => this.books = books);
+        },
         selectBook(book) {
             this.selectedBook = book;
             this.isShown = false;
