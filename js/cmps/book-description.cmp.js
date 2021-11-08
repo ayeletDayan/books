@@ -3,7 +3,7 @@ export default {
     template: `
         <div class="book-description">
              <p>Description: {{bookDescription}}</p>
-            <button @click="showMore = !showMore" v-if="!isFullLength">{{showTxt}}</button>
+            <button :class="showBtn" @click="showMore = !showMore" v-if="!isFullLength">{{showTxt}}</button>
             </div>
     `,
     data() {
@@ -19,6 +19,9 @@ export default {
         },
         showTxt() {
          return (this.showMore)?  'Show Less' : 'Show More'
+        },
+        showBtn(){
+            return (this.description.length > 100)?  'shown' : 'hidden'
         }
     }
 
