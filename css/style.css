@@ -15,6 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .app-header nav{
@@ -93,17 +94,19 @@ img {
 
 .book-details{
     padding: 20px;
-    margin-top: 20px;
     background-color: whitesmoke;
     text-align: center;
+    border: solid black;
+    width: 50%;
+    margin: auto;
 }
 
 .book-review{
     box-shadow: 1px 2px 2px 2px;
-    width: 30%;
+    min-idth: 300px;
     text-align: center;
     margin: auto; 
-    padding: 5px;   
+    padding: 5px;
 }
 
 .reader{
@@ -116,21 +119,21 @@ img {
 }
 
 .book-review input{
-    width: 40px;
+width: 40px;
 }
 
 .reviews-list{
     list-style: none;
-    padding: 3px;
+    padding: 5px;
     display: flex;
     flex-direction: row; 
-    justify-content: center;
-    border:  1px solid black;
+    justify-content: center;    
+    box-shadow: 1px 2px 2px 2px;
     margin-bottom: 3px;background-color: rgba(128, 128, 128, 0.096);
-    width: 50%;
+    min-width: 300px;
     align-items: center;
-    /* text-align: center; */
     margin: auto;
+    margin-bottom: 20px;
 }
 
 .x{
@@ -139,7 +142,7 @@ img {
     padding: 3px;
     box-shadow: 1px 1px 1px rgb(5, 5, 5);
     background-color: grey;
-    margin-bottom: 3px;
+    margin: 3px;
 }
 
 button{
@@ -191,3 +194,7 @@ button{
     font-weight: bold;
     color: yellow;
 }
+
+.checked {
+    color: orange;
+  }

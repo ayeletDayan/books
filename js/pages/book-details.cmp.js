@@ -16,20 +16,20 @@ export default {
             <p :class="price">{{currencyCode}}</p>
             <p v-if=book.listPrice.isOnSale class="sale">SALE!!!</p>
             <review-add @addReview="saveReview"/> 
-            <ul v-if="book.reviews">
+            <div v-if="book.reviews">
             <h4>Reviews</h4>
-            <div class="reviews-list" v-for="(review,idx) in book.reviews">
-                <li>{{review.txt}}</li> 
-                <br>
-                <a class="x" @click="removeReview">x</a>
+            <div class="reviews-list" v-for="(review,idx) in book.reviews" :key="review.id">
+            <li>{{review.txt}}</li> <hr> 
+            <span v-for="num in 5" class="fa fa-star" :class="{checked:num<=review.rate}"></span>        
+                
+            <a class="x" @click="removeReview">x</a>
+                
             </div>  
-            </ul>
+            </div>
             
             <router-link to="/book">X</router-link>
         </section>
     `,
-
-    //<car-list :cars="carsToShow" @remove="removeCar"/>
 
        data() {
         return {

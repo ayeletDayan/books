@@ -7,7 +7,9 @@ export default {
             <form @submit.prevent="save" >
                 <textarea class="reader" v-model="reviewToAdd.createdBy" placeholder="Reader fall name"></textarea> <br>            
                 <textarea class="review" v-model="reviewToAdd.txt"></textarea> <br>
-                <input v-model="reviewToAdd.rating" type="number" max="5"/>
+                <div class="stars">
+                <span v-for="num in 5" class="fa fa-star" :class="{checked:num<=reviewToAdd.rate}" @click="changeColor(num)"></span>
+                </div>
                 <button>Save</button>
             </form>
         </section>
@@ -18,11 +20,12 @@ export default {
                 txt: '',
                 rating: 0,
                 readAt: Date.now(),
-                createdBy: ''
+                createdBy: '',
+                rate: 3
             }  
         };
     },
-    created() {
+    created() {        
 
     },
     
@@ -30,6 +33,10 @@ export default {
     methods: {
         save() {
             this.$emit('addReview', this.reviewToAdd)
+        },
+        changeColor(num){
+            this.reviewToAdd.rate = num;
+            console.log('hello', num)
         }
 
     }
