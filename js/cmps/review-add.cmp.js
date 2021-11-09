@@ -5,7 +5,8 @@ export default {
         <section class="book-review">
             <h4>Add a new review</h4>
             <form @submit.prevent="save" >
-                <textarea v-model="reviewToAdd.txt"></textarea> <br>
+                <textarea class="reader" v-model="reviewToAdd.createdBy" placeholder="Reader fall name"></textarea> <br>            
+                <textarea class="review" v-model="reviewToAdd.txt"></textarea> <br>
                 <input v-model="reviewToAdd.rating" type="number" max="5"/>
                 <button>Save</button>
             </form>
@@ -17,7 +18,7 @@ export default {
                 txt: '',
                 rating: 0,
                 readAt: Date.now(),
-                createdBy: 'Reader'
+                createdBy: ''
             }  
         };
     },

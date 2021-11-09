@@ -1,6 +1,8 @@
 import bookDescription from '../cmps/book-description.cmp.js';
 import { bookService } from '../services/book-service.js';
-import reviewAdd from '../cmps/review-add.cmp.js'
+import reviewAdd from '../cmps/review-add.cmp.js';
+import { eventBus } from '../services/event-bus-service.js';
+
 
 export default {
     // props: ['book'],
@@ -16,21 +18,27 @@ export default {
             <review-add @addReview="saveReview"/> 
             <ul v-if="book.reviews">
             <h4>Reviews</h4>
-                <li class="reviews-list" v-for="review in book.reviews">{{review.txt}}</li>
+            <div class="reviews-list" v-for="(review,idx) in book.reviews">
+                <li>{{review.txt}}</li> 
+                <br>
+                <a class="x" @click="removeReview">x</a>
+            </div>  
             </ul>
-            <br>
-            <button @click="$emit('close')" >X</button>
+            
+            <router-link to="/book">X</router-link>
         </section>
     `,
 
-    data() {
+    //<car-list :cars="carsToShow" @remove="removeCar"/>
+
+       data() {
         return {
             book: null
         };
     },
     created() {      
         const { bookId } = this.$route.params;
-        console.log(bookId);
+        // console.log(bookId);
         bookService.getById(bookId)
             .then(book =>{ this.book = book});
     },
@@ -39,8 +47,49 @@ export default {
             if(!this.book.reviews) this.book.reviews = []
             this.book.reviews.push(review)
             bookService.put(this.book)
-        }
+            .then(book => this.book = book)
+            .then(() => {
+                 const msg = {
+                     txt: `Review was added`,
+                     type: 'success'
+                 };
+                 eventBus.$emit('showMsg', msg);
+             })
+             .catch(err => {
+                 console.log('err', err);
+                 const msg = {
+                     txt: 'Error. Please try later',
+                     type: 'error'
+                 };
+                 eventBus.$emit('showMsg', msg);
+             });
+        },
+        callBus() {
+           
+        },
+        removeReview(idx) {
+        // console.log(idx)
+        this.book.reviews.splice(idx, 1)
+        bookService.put(this.book)
+        .then(book => this.book = book)
+           .then(() => {
+                const msg = {
+                    txt: `Review was remove`,
+                    type: 'success'
+                };
+                eventBus.$emit('showMsg', msg);
+            })
+            .catch(err => {
+                console.log('err', err);
+                const msg = {
+                    txt: 'Error. Please try later',
+                    type: 'error'
+                };
+                eventBus.$emit('showMsg', msg);
+            });
     },
+},
+
     computed: {
         pageCount() {
             if (this.book.pageCount > 500) return 'Long reading'
@@ -64,6 +113,7 @@ export default {
     },
     components: {
         bookDescription,
-        reviewAdd
+        reviewAdd,
+        eventBus
     }
 }

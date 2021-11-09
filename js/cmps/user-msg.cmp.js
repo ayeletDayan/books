@@ -1,3 +1,5 @@
+import { eventBus } from '../services/event-bus-service.js';
+
 export default {
     template: `
     <transition name="fade">
@@ -12,7 +14,7 @@ export default {
         };
     },
     created() {
-
+        eventBus.$on('showMsg', this.showMsg);
     },
     methods: {
         showMsg(msg) {
@@ -23,7 +25,7 @@ export default {
         }
     },
     destroyed() {
-        
+        eventBus.$off('showMsg', this.showMsg);
     }
 
 };

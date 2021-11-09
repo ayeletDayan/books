@@ -106,17 +106,44 @@ img {
     padding: 5px;   
 }
 
+.reader{
+   height: 20px;
+}
+
+.review{
+    height: 60px;
+    margin-bottom: 10px;
+}
+
 .book-review input{
     width: 40px;
 }
 
 .reviews-list{
     list-style: none;
-    padding: 3px; 
+    padding: 3px;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    border:  1px solid black;
+    margin-bottom: 3px;background-color: rgba(128, 128, 128, 0.096);
+    width: 50%;
+    align-items: center;
+    /* text-align: center; */
+    margin: auto;
+}
+
+.x{
+    font-size: 10px;
+    margin-left: 10px;
+    padding: 3px;
+    box-shadow: 1px 1px 1px rgb(5, 5, 5);
+    background-color: grey;
+    margin-bottom: 3px;
 }
 
 button{
-    background-color: rgb(170, 163, 163);
+    background-color: rgb(114, 111, 111);
 }
 
 .book-title{
@@ -154,4 +181,13 @@ button{
 
 .hidden{
     display: none;
+}
+
+.user-msg{
+    background-color:black;
+    width: 20%;
+    margin: auto;
+    font-variant-caps: all-small-caps;
+    font-weight: bold;
+    color: yellow;
 }
