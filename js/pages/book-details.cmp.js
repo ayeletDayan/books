@@ -26,69 +26,85 @@ export default {
                 
             </div>  
             </div>
-            
-            <router-link to="/book">X</router-link>
+            <br>
+            <router-link class="x" :to="'/book/'+nextBookId">Next book</router-link>
+            <router-link class="x" to="/book/">X</router-link>
         </section>
     `,
 
-       data() {
+    data() {
         return {
-            book: null
+            book: null,
+            nextBookId: null
         };
     },
-    created() {      
-        const { bookId } = this.$route.params;
+    created() {
+        // const { bookId } = this.$route.params;
         // console.log(bookId);
-        bookService.getById(bookId)
-            .then(book =>{ this.book = book});
+        // bookService.getById(bookId)
+        //     .then(book => { this.book = book });
+        // bookService.getNextBookId(bookId)
+        //     .then(bookId => this.nextBookId = bookId);
     },
     methods: {
-        saveReview(review){
-            if(!this.book.reviews) this.book.reviews = []
+        saveReview(review) {
+            if (!this.book.reviews) this.book.reviews = []
             this.book.reviews.push(review)
             bookService.put(this.book)
-            .then(book => this.book = book)
-            .then(() => {
-                 const msg = {
-                     txt: `Review was added`,
-                     type: 'success'
-                 };
-                 eventBus.$emit('showMsg', msg);
-             })
-             .catch(err => {
-                 console.log('err', err);
-                 const msg = {
-                     txt: 'Error. Please try later',
-                     type: 'error'
-                 };
-                 eventBus.$emit('showMsg', msg);
-             });
+                .then(book => this.book = book)
+                .then(() => {
+                    const msg = {
+                        txt: `Review was added`,
+                        type: 'success'
+                    };
+                    eventBus.$emit('showMsg', msg);
+                })
+                .catch(err => {
+                    console.log('err', err);
+                    const msg = {
+                        txt: 'Error. Please try later',
+                        type: 'error'
+                    };
+                    eventBus.$emit('showMsg', msg);
+                });
         },
         callBus() {
-           
+
         },
         removeReview(idx) {
-        // console.log(idx)
-        this.book.reviews.splice(idx, 1)
-        bookService.put(this.book)
-        .then(book => this.book = book)
-           .then(() => {
-                const msg = {
-                    txt: `Review was remove`,
-                    type: 'success'
-                };
-                eventBus.$emit('showMsg', msg);
-            })
-            .catch(err => {
-                console.log('err', err);
-                const msg = {
-                    txt: 'Error. Please try later',
-                    type: 'error'
-                };
-                eventBus.$emit('showMsg', msg);
-            });
+            // console.log(idx)
+            this.book.reviews.splice(idx, 1)
+            bookService.put(this.book)
+                .then(book => this.book = book)
+                .then(() => {
+                    const msg = {
+                        txt: `Review was remove`,
+                        type: 'success'
+                    };
+                    eventBus.$emit('showMsg', msg);
+                })
+                .catch(err => {
+                    console.log('err', err);
+                    const msg = {
+                        txt: 'Error. Please try later',
+                        type: 'error'
+                    };
+                    eventBus.$emit('showMsg', msg);
+                });
+        },
     },
-},
+    watch: {
+        '$route.params.bookId': {
+            handler(){
+                const { bookId } = this.$route.params;
+                bookService.getById(bookId)
+                    .then(book => { this.book = book });
+                bookService.getNextBookId(bookId)
+                    .then(bookId => this.nextBookId = bookId);
+            },
+            immediate: true
+        }
+    },
 
     computed: {
         pageCount() {

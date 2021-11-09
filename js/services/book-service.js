@@ -6,9 +6,11 @@ _createBooks()
 export const bookService = {
   query,
   remove,
-  save,
   getById,
-  put
+  put,
+  searchBook,
+  addBook,
+  getNextBookId
 };
 
 function query() {
@@ -471,11 +473,7 @@ function remove(bookId) {
   utilService.saveToStorage(BOOKS_KEY, this.gBooks);
 }
 
-function save(book) {
-  book.id = utilService.makeId();
-  this.gBooks.unshift(book);
-  utilService.saveToStorage(BOOKS_KEY, this.gBooks);
-}
+
 
 function getById(bookId) {
   return utilService.get(BOOKS_KEY, bookId);
@@ -483,4 +481,51 @@ function getById(bookId) {
 
 function put(book){
   return utilService.put(BOOKS_KEY, book)
+}
+
+function addBook(googleBook){
+  // const {title} = googleBook.volumeInfo
+  const bookToAdd = {
+    title: googleBook.volumeInfo.title,
+    subtitle: googleBook.volumeInfo.subtitle,
+    authors: googleBook.volumeInfo.authors,
+    publishedDate: googleBook.volumeInfo.publishedDate,
+    description: googleBook.volumeInfo.description,
+    pageCount: googleBook.volumeInfo.pageCount,
+    categories: googleBook.volumeInfo.categories,
+    thumbnail: googleBook.volumeInfo.imageLinks.thumbnail,
+    language: googleBook.volumeInfo.language,
+    listPrice: {
+      amount: 100,
+      currencyCode: 'USD',
+      isOnSale: _isOnSale(googleBook.saleInfo.saleability)
+    }
+  }
+  console.log(bookToAdd)
+  return utilService.post(BOOKS_KEY, bookToAdd)
+}
+
+function searchBook(title) {
+  console.log(title);
+const bookSearch = utilService.loadFromStorage('seveneves');
+if (bookSearch && bookSearch.length) return Promise.resolve(bookSearch) 
+
+return axios.get(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${title}`)
+  .then(res => {
+    const books = res.data.items;
+    utilService.saveToStorage('seveneves', books);
+    return books
+  })
+}
+
+function _isOnSale(saleability){
+  return (saleability==='NOT_FOR_SALE') ? false : true
+}
+
+function getNextBookId(bookId){
+  return query()
+  .then(books => {
+    const idx = books.findIndex(book => book.id === bookId);
+    return (idx === books.length - 1)? books[0].idx : books[idx+1].id;
+  })
 }

@@ -1,11 +1,13 @@
 import { bookService } from '../services/book-service.js';
 import bookList from '../cmps/book-list.cmp.js';
+import bookAdd from '../cmps/add-book.cmp.js';
 import bookFilter from '../cmps/book-filter.cmp.js';
 import bookDetails from './book-details.cmp.js';
 
 export default {
     template: `
     <section class="book-app">
+            <book-add @add-book="addBook" />
             <book-filter @filtered="setFilter" />
             <book-list v-if="isShown" :books="booksToShow" @selected="selectBook" />
         </section>
@@ -38,6 +40,10 @@ export default {
         setFilter(filterBy) {
             this.filterBy = filterBy;
         },
+        addBook(newBook){
+            bookService.addBook(newBook)
+                .then(this.loadBooks)
+        }
     },
 
     computed: {
@@ -60,5 +66,6 @@ export default {
         bookList,
         bookFilter,
         bookDetails,
+        bookAdd
     },
 };

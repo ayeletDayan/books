@@ -1,10 +1,10 @@
 export const utilService = {
     saveToStorage,
-    loadFromStorage,
-    makeId,
+    loadFromStorage,    
     query,
     get,
-    put
+    put,
+    post
 }
 
 function saveToStorage(key, value) {
@@ -16,13 +16,23 @@ function loadFromStorage(key) {
     return (data) ? JSON.parse(data) : undefined;
 }
 
-function makeId(length = 5) {
+function _makeId(length = 5) {
     var txt = '';
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < length; i++) {
         txt += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return txt;
+}
+
+function post(entityType, newEntity) {
+    newEntity.id = _makeId()
+    return query(entityType)
+        .then(entities => {
+            entities.push(newEntity);
+            _save(entityType, entities)
+            return newEntity;
+        })
 }
 
 function query(entityType) {
